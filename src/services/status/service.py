@@ -1,5 +1,6 @@
 from ...infra.db import run_query
 
+
 def get_db_status():
   try:
     run_query("SELECT 1 AS ok")

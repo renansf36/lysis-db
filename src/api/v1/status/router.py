@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from ....services.status.service import get_db_status
 
 router = APIRouter(prefix="/api/v1", tags=["Status"])
