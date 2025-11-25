@@ -40,3 +40,7 @@ Formatação de Código
 Testes Automatizados
 - Rodar testes automatizados `task test`
 - Testes no modo Watch `task testWatch`
+
+## Produção
+Rodar em produção
+- `task prod` executa o script `prod.py` para produção.
