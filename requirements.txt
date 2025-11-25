@@ -5,3 +5,6 @@ python-dotenv
 pydantic
 taskipy
 ruff
+pytest
+httpx
+pytest-watch
