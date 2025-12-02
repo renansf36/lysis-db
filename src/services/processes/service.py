@@ -13,6 +13,10 @@ from ...repositories.processes.repository import (
     fetch_by_origin_with_instance_date_filter,
     fetch_by_status,
     fetch_process_count,
+    fetch_publication_by_matter_year,
+    fetch_publication_by_matter_total,
+    fetch_publication_by_matter_last_six_months,
+    fetch_publication_by_matter_last_month,
 )
 from ...schemas.schemas import (
     DateRangeFilter,
@@ -64,3 +68,18 @@ def get_by_origin_with_date_range(filters: DateRangeFilter):
 
 def get_by_origin_with_date_range_detailed(filters: DateRangeFilter):
     return fetch_by_origin_with_date_range_detailed(filters)
+
+def get_publication_by_matter_year(filters: YearFilter):
+    return fetch_publication_by_matter_year(filters)
+
+
+def get_publication_by_matter_total():
+    return fetch_publication_by_matter_total()
+
+
+def get_publication_by_matter_last_six_months(filters: YearFilter):
+    return fetch_publication_by_matter_last_six_months(filters)
+
+
+def get_publication_by_matter_last_month(filters: YearFilter):
+    return fetch_publication_by_matter_last_month(filters)

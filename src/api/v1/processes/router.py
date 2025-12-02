@@ -21,6 +21,10 @@ from ....services.processes.service import (
     get_origin_stats,
     get_process_count,
     get_status_stats,
+    get_publication_by_matter_year,
+    get_publication_by_matter_total,
+    get_publication_by_matter_last_six_months,
+    get_publication_by_matter_last_month,
 )
 
 router = APIRouter(prefix="/api/v1/processes", tags=["Processes"])
@@ -164,3 +168,65 @@ def processes_by_origin_with_date_range_detailed(filters: DateRangeFilter):
     Retorna: Array com Origem, Ano, Mes e Quantidade para cada combinação.
     """
     return get_by_origin_with_date_range_detailed(filters)
+
+@router.post(
+    "/publications/by-matter-year",
+    summary="Publicações por matéria em um ano específico",
+)
+def publications_by_matter_year(filters: YearFilter):
+    """
+    Retorna a quantidade de publicações (TIP_ORIGEM = 3) agrupadas por matéria,
+    para o ano informado.
+
+    Exemplo de payload:
+    {
+        "year": 2025
+    }
+    """
+    return get_publication_by_matter_year(filters)
+
+
+@router.get(
+    "/publications/by-matter-total",
+    summary="Total geral de publicações por matéria",
+)
+def publications_by_matter_total():
+    """
+    Retorna a quantidade total de publicações (TIP_ORIGEM = 3) agrupadas por matéria,
+    sem filtro de ano.
+    """
+    return get_publication_by_matter_total()
+
+
+@router.post(
+    "/publications/by-matter-last-six-months",
+    summary="Publicações por mês (últimos 6 meses do ano, jul–dez)",
+)
+def publications_by_matter_last_six_months(filters: YearFilter):
+    """
+    Retorna a quantidade de publicações (TIP_ORIGEM = 3) agrupadas por mês (julho a dezembro)
+    para o ano informado.
+
+    Exemplo de payload:
+    {
+        "year": 2025
+    }
+    """
+    return get_publication_by_matter_last_six_months(filters)
+
+
+@router.post(
+    "/publications/by-matter-last-month",
+    summary="Publicações por matéria no último mês com dados",
+)
+def publications_by_matter_last_month(filters: YearFilter):
+    """
+    Retorna a quantidade de publicações (TIP_ORIGEM = 3) agrupadas por matéria
+    no último mês COM DADOS dentro do ano informado.
+
+    Exemplo de payload:
+    {
+        "year": 2025
+    }
+    """
+    return get_publication_by_matter_last_month(filters)

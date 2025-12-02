@@ -352,3 +352,144 @@ def fetch_by_origin_with_date_range_detailed(filters: DateRangeFilter):
             Origem
     """
     return run_query(sql)
+
+def fetch_publication_by_matter_year(filters: YearFilter):
+    """
+        Publicações (TIP_ORIGEM = 3) por matéria em um ano específico.
+        Baseado na query enviada.
+    """
+    sql = f"""
+        SELECT 
+            COUNT(*) AS total,
+            COALESCE(TMAT.NOM_MATERIA, 'Não informado') AS subject
+        FROM ADA_ANDAMENTO_VALENCA T01
+        INNER JOIN PRO_PROCESSO_VALENCA TPROC
+                ON T01.ISN_PROCESSO = TPROC.ISN_PROCESSO
+        LEFT JOIN MAT_MATERIA_VALENCA TMAT
+               ON TPROC.ISN_MATERIA = TMAT.ISN_MATERIA
+        LEFT JOIN INS_INSTANCIA_VALENCA TINS
+               ON T01.ISN_PROCESSO = TINS.ISN_PROCESSO
+        WHERE T01.TIP_ORIGEM = 3
+          AND T01.DAT_EXCLUSAO IS NULL
+          AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
+          AND YEAR(T01.DAT_INCLUSAO) = {filters.year}
+        GROUP BY COALESCE(TMAT.NOM_MATERIA, 'Não informado')
+        ORDER BY subject
+    """
+    return run_query(sql)
+
+def fetch_publication_by_matter_total():
+    """
+    Total geral de publicações (TIP_ORIGEM = 3) por matéria,
+    sem filtro de ano.
+    """
+    sql = """
+        SELECT 
+            COUNT(*) AS total,
+            COALESCE(TMAT.NOM_MATERIA, 'Não informado') AS subject
+        FROM ADA_ANDAMENTO_VALENCA T01
+        INNER JOIN PRO_PROCESSO_VALENCA TPROC
+                ON T01.ISN_PROCESSO = TPROC.ISN_PROCESSO
+        LEFT JOIN MAT_MATERIA_VALENCA TMAT
+               ON TPROC.ISN_MATERIA = TMAT.ISN_MATERIA
+        LEFT JOIN INS_INSTANCIA_VALENCA TINS
+               ON T01.ISN_PROCESSO = TINS.ISN_PROCESSO
+        WHERE T01.TIP_ORIGEM = 3
+          AND T01.DAT_EXCLUSAO IS NULL
+          AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
+        GROUP BY COALESCE(TMAT.NOM_MATERIA, 'Não informado')
+        ORDER BY subject
+    """
+    return run_query(sql)
+
+def fetch_publication_by_matter_last_six_months(filters: YearFilter):
+    """
+    Publicações por mês (julho a dezembro) no ano informado,
+    para TIP_ORIGEM = 3. Segue o mesmo padrão das funções
+    *_last_six_months que você já tem (Mes 7–12).
+    """
+    sql = f"""
+        WITH Base AS (
+            SELECT 
+                TRY_CONVERT(date, T01.DAT_INCLUSAO) AS DataPublicacao,
+                MONTH(TRY_CONVERT(date, T01.DAT_INCLUSAO)) AS Mes,
+                YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)) AS Ano
+            FROM ADA_ANDAMENTO_VALENCA T01
+            INNER JOIN PRO_PROCESSO_VALENCA TPROC
+                    ON T01.ISN_PROCESSO = TPROC.ISN_PROCESSO
+            LEFT JOIN MAT_MATERIA_VALENCA TMAT
+                   ON TPROC.ISN_MATERIA = TMAT.ISN_MATERIA
+            LEFT JOIN INS_INSTANCIA_VALENCA TINS
+                   ON T01.ISN_PROCESSO = TINS.ISN_PROCESSO
+            WHERE T01.TIP_ORIGEM = 3
+              AND T01.DAT_EXCLUSAO IS NULL
+              AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
+              AND TRY_CONVERT(date, T01.DAT_INCLUSAO) IS NOT NULL
+              AND YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)) = {filters.year}
+        ),
+        Meses AS (
+            SELECT 7 AS Mes
+            UNION ALL SELECT 8
+            UNION ALL SELECT 9
+            UNION ALL SELECT 10
+            UNION ALL SELECT 11
+            UNION ALL SELECT 12
+        )
+        SELECT 
+            M.Mes,
+            DATENAME(MONTH, DATEFROMPARTS({filters.year}, M.Mes, 1)) AS NomeMes,
+            ISNULL(C.Total, 0) AS TotalPublicacoes
+        FROM Meses M
+        LEFT JOIN (
+            SELECT Mes, COUNT(*) AS Total
+            FROM Base
+            GROUP BY Mes
+        ) C ON M.Mes = C.Mes
+        ORDER BY M.Mes
+    """
+    return run_query(sql)
+
+
+def fetch_publication_by_matter_last_month(filters: YearFilter):
+    """
+    Publicações por matéria no último mês COM DADOS
+    dentro do ano informado.
+    """
+    sql = f"""
+        WITH Base AS (
+            SELECT 
+                TRY_CONVERT(date, T01.DAT_INCLUSAO) AS DataPublicacao,
+                MONTH(TRY_CONVERT(date, T01.DAT_INCLUSAO)) AS Mes,
+                YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)) AS Ano,
+                T01.ISN_PROCESSO
+            FROM ADA_ANDAMENTO_VALENCA T01
+            WHERE T01.TIP_ORIGEM = 3
+              AND T01.DAT_EXCLUSAO IS NULL
+              AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
+              AND TRY_CONVERT(date, T01.DAT_INCLUSAO) IS NOT NULL
+              AND YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)) = {filters.year}
+        ),
+        UltimoMes AS (
+            SELECT 
+                MAX(Ano) AS Ano,
+                MAX(Mes) AS Mes
+            FROM Base
+        )
+        SELECT 
+            COUNT(*) AS total,
+            COALESCE(TMAT.NOM_MATERIA, 'Não informado') AS subject
+        FROM Base B
+        INNER JOIN UltimoMes U
+                ON B.Ano = U.Ano
+               AND B.Mes = U.Mes
+        INNER JOIN PRO_PROCESSO_VALENCA TPROC
+                ON B.ISN_PROCESSO = TPROC.ISN_PROCESSO
+        LEFT JOIN MAT_MATERIA_VALENCA TMAT
+               ON TPROC.ISN_MATERIA = TMAT.ISN_MATERIA
+        LEFT JOIN INS_INSTANCIA_VALENCA TINS
+               ON B.ISN_PROCESSO = TINS.ISN_PROCESSO
+        GROUP BY COALESCE(TMAT.NOM_MATERIA, 'Não informado')
+        ORDER BY subject
+    """
+    return run_query(sql)
+
