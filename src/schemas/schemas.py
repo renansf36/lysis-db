@@ -11,3 +11,7 @@ class YearRangeFilter(BaseModel):
 
 class YearFilter(BaseModel):
     year: int
+
+class DateRangeFilter(BaseModel):
+    start_date: str
+    end_date: str

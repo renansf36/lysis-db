@@ -8,11 +8,17 @@ from ...repositories.processes.repository import (
     fetch_by_origin_import_last_six_months,
     fetch_by_origin_registration_by_year_range,
     fetch_by_origin_registration_last_six_months,
+    fetch_by_origin_with_date_range,
     fetch_by_origin_with_instance_date_filter,
     fetch_by_status,
     fetch_process_count,
 )
-from ...schemas.schemas import OriginDateFilter, YearFilter, YearRangeFilter
+from ...schemas.schemas import (
+    DateRangeFilter,
+    OriginDateFilter,
+    YearFilter,
+    YearRangeFilter,
+)
 
 
 def get_process_count():
@@ -51,3 +57,6 @@ def get_by_origin_distribution_last_six_months(filters: YearFilter):
 
 def get_by_origin_import_last_six_months(filters: YearFilter):
     return fetch_by_origin_import_last_six_months(filters)
+
+def get_by_origin_with_date_range(filters: DateRangeFilter):
+    return fetch_by_origin_with_date_range(filters)

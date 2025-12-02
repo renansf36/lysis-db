@@ -207,3 +207,34 @@ def test_processes_by_origin_import_last_six_months_custom_year():
   )
   
   assert response.status_code == 200
+
+def test_processes_by_origin_with_date_range():
+  """
+  Testa o endpoint POST /by-origin-with-date-range
+  com intervalo de datas específico
+  """
+  payload = {
+    "start_date": "2025-07-01",
+    "end_date": "2025-12-31"
+  }
+  response = client.post(
+    "/api/v1/processes/by-origin-with-date-range",
+    json=payload
+  )
+  
+  assert response.status_code == 200
+  
+def test_processes_by_origin_with_date_range_custom():
+  """
+  Testa com intervalo diferente
+  """
+  payload = {
+    "start_date": "2024-01-01",
+    "end_date": "2024-12-31"
+  }
+  response = client.post(
+    "/api/v1/processes/by-origin-with-date-range",
+    json=payload
+  )
+  
+  assert response.status_code == 200

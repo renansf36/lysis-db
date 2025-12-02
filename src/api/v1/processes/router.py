@@ -1,12 +1,18 @@
 from fastapi import APIRouter
 
-from ....schemas.schemas import OriginDateFilter, YearFilter, YearRangeFilter
+from ....schemas.schemas import (
+    DateRangeFilter,
+    OriginDateFilter,
+    YearFilter,
+    YearRangeFilter,
+)
 from ....services.processes.service import (
     get_by_origin_capture_last_six_months,
     get_by_origin_distribution_last_six_months,
     get_by_origin_import_last_six_months,
     get_by_origin_registration_by_year_range,
     get_by_origin_registration_last_six_months,
+    get_by_origin_with_date_range,
     get_by_origin_with_instance_date_filter,
     get_group_stats,
     get_matter_stats,
@@ -121,3 +127,20 @@ def processes_by_origin_import_last_six_months(filters: YearFilter):
     para os últimos 6 meses do ano especificado (julho a dezembro).
     """
     return get_by_origin_import_last_six_months(filters)
+
+@router.post(
+    "/by-origin-with-date-range",
+    summary="Processos por origem dentro de intervalo de datas"
+)
+def processes_by_origin_with_date_range(filters: DateRangeFilter):
+    """
+    Retorna a quantidade de processos agrupados por origem dentro 
+    de um intervalo de datas.
+    
+    Exemplo de payload:
+    {
+        "start_date": "2025-07-01",
+        "end_date": "2025-12-31"
+    }
+    """
+    return get_by_origin_with_date_range(filters)

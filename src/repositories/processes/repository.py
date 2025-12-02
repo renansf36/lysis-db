@@ -1,5 +1,10 @@
 from src.infra.db import run_query
-from src.schemas.schemas import OriginDateFilter, YearFilter, YearRangeFilter
+from src.schemas.schemas import (
+    DateRangeFilter,
+    OriginDateFilter,
+    YearFilter,
+    YearRangeFilter,
+)
 
 
 def fetch_process_count():
@@ -288,5 +293,30 @@ def fetch_by_origin_import_last_six_months(filters: YearFilter):
             GROUP BY Mes
         ) C ON M.Mes = C.Mes
         ORDER BY M.Mes
+    """
+    return run_query(sql)
+
+def fetch_by_origin_with_date_range(filters: DateRangeFilter):
+    sql = f"""
+        SELECT 
+            COUNT(1) AS Quantidade,
+            T02.DES_ATRIBUTO AS Origem
+        FROM PRO_PROCESSO_VALENCA T01
+        INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02 
+            ON T01.TIP_ORIGEM_PROCESSO = T02.VAL_ATRIBUTO
+           AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
+        LEFT JOIN INS_INSTANCIA_VALENCA T03 
+            ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        CROSS APPLY (
+            SELECT TRY_CONVERT(
+                date, NULLIF(LTRIM(RTRIM(T03.DAT_INSTANCIA)), '')
+            ) 
+            AS DAT_INSTANCIA_DT
+        ) AS X
+        WHERE X.DAT_INSTANCIA_DT IS NOT NULL
+          AND X.DAT_INSTANCIA_DT >= '{filters.start_date}'
+          AND X.DAT_INSTANCIA_DT <= '{filters.end_date}'
+        GROUP BY T02.DES_ATRIBUTO
+        ORDER BY T02.DES_ATRIBUTO
     """
     return run_query(sql)
