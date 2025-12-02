@@ -2,9 +2,9 @@ from fastapi import APIRouter
 
 from ....schemas.schemas import OriginDateFilter, YearFilter, YearRangeFilter
 from ....services.processes.service import (
+    get_by_origin_capture_last_six_months,
     get_by_origin_registration_by_year_range,
     get_by_origin_registration_last_six_months,
-    get_by_origin_capture_last_six_months,
     get_by_origin_with_instance_date_filter,
     get_group_stats,
     get_matter_stats,

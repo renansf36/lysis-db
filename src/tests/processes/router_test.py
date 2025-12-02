@@ -141,4 +141,3 @@ def test_processes_by_origin_capture_last_six_months_custom_year():
   )
   
   assert response.status_code == 200
-  data = response.json()
