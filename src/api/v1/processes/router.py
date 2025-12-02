@@ -13,6 +13,7 @@ from ....services.processes.service import (
     get_by_origin_registration_by_year_range,
     get_by_origin_registration_last_six_months,
     get_by_origin_with_date_range,
+    get_by_origin_with_date_range_detailed,
     get_by_origin_with_instance_date_filter,
     get_group_stats,
     get_matter_stats,
@@ -144,3 +145,22 @@ def processes_by_origin_with_date_range(filters: DateRangeFilter):
     }
     """
     return get_by_origin_with_date_range(filters)
+
+@router.post(
+    "/by-origin-with-date-range-detailed",
+    summary="Processos por origem e mês dentro de intervalo de datas"
+)
+def processes_by_origin_with_date_range_detailed(filters: DateRangeFilter):
+    """
+    Retorna a quantidade de processos agrupados por origem, ano e mês 
+    dentro de um intervalo de datas. Fornece detalhamento mês a mês.
+    
+    Exemplo de payload:
+    {
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31"
+    }
+    
+    Retorna: Array com Origem, Ano, Mes e Quantidade para cada combinação.
+    """
+    return get_by_origin_with_date_range_detailed(filters)

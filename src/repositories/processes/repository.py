@@ -320,3 +320,35 @@ def fetch_by_origin_with_date_range(filters: DateRangeFilter):
         ORDER BY T02.DES_ATRIBUTO
     """
     return run_query(sql)
+
+def fetch_by_origin_with_date_range_detailed(filters: DateRangeFilter):
+    sql = f"""
+        SELECT 
+            T02.DES_ATRIBUTO AS Origem,
+            YEAR(X.DAT_INSTANCIA_DT) AS Ano,
+            MONTH(X.DAT_INSTANCIA_DT) AS Mes,
+            COUNT(1) AS Quantidade
+        FROM PRO_PROCESSO_VALENCA T01
+        INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02 
+            ON T01.TIP_ORIGEM_PROCESSO = T02.VAL_ATRIBUTO
+           AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
+        LEFT JOIN INS_INSTANCIA_VALENCA T03 
+            ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        CROSS APPLY (
+            SELECT TRY_CONVERT(
+                date, NULLIF(LTRIM(RTRIM(T03.DAT_INSTANCIA)), '')
+            ) AS DAT_INSTANCIA_DT
+        ) AS X
+        WHERE X.DAT_INSTANCIA_DT IS NOT NULL
+          AND X.DAT_INSTANCIA_DT >= '{filters.start_date}'
+          AND X.DAT_INSTANCIA_DT <= '{filters.end_date}'
+        GROUP BY 
+            T02.DES_ATRIBUTO,
+            YEAR(X.DAT_INSTANCIA_DT),
+            MONTH(X.DAT_INSTANCIA_DT)
+        ORDER BY 
+            Ano,
+            Mes,
+            Origem
+    """
+    return run_query(sql)

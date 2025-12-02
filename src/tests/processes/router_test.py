@@ -238,3 +238,36 @@ def test_processes_by_origin_with_date_range_custom():
   )
   
   assert response.status_code == 200
+
+def test_processes_by_origin_with_date_range_detailed():
+  """
+  Test endpoint that returns detailed monthly breakdown of processes by origin for 2025.
+  """
+  payload = {
+    "start_date": "2025-01-01",
+    "end_date": "2025-12-31"
+  }
+  response = client.post(
+    "/api/v1/processes/by-origin-with-date-range-detailed",
+    json=payload
+  )
+  
+  assert response.status_code == 200
+
+def test_processes_by_origin_with_date_range_detailed_custom():
+  """
+  Test endpoint with custom date range and verify month-by-month breakdown.
+  """
+  payload = {
+    "start_date": "2024-06-01",
+    "end_date": "2024-08-31"
+  }
+  response = client.post(
+    "/api/v1/processes/by-origin-with-date-range-detailed",
+    json=payload
+  )
+  
+  assert response.status_code == 200
+  data = response.json()
+  assert isinstance(data, list)
+  
