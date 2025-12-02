@@ -251,3 +251,42 @@ def fetch_by_origin_distribution_last_six_months(filters: YearFilter):
         ORDER BY M.Mes
     """
     return run_query(sql)
+
+def fetch_by_origin_import_last_six_months(filters: YearFilter):
+    sql = f"""
+        WITH Base AS (
+            SELECT 
+                TRY_CONVERT(date, T03.DAT_INSTANCIA) AS DataInstancia,
+                MONTH(TRY_CONVERT(date, T03.DAT_INSTANCIA)) AS Mes,
+                YEAR(TRY_CONVERT(date, T03.DAT_INSTANCIA)) AS Ano
+            FROM PRO_PROCESSO_VALENCA T01
+            INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02 
+                ON T01.TIP_ORIGEM_PROCESSO = T02.VAL_ATRIBUTO
+               AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
+            LEFT JOIN INS_INSTANCIA_VALENCA T03 
+                ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+            WHERE TRY_CONVERT(date, T03.DAT_INSTANCIA) IS NOT NULL
+              AND T02.DES_ATRIBUTO = 'Importação'
+              AND YEAR(TRY_CONVERT(date, T03.DAT_INSTANCIA)) = {filters.year}
+        ),
+        Meses AS (
+            SELECT 7 AS Mes
+            UNION ALL SELECT 8
+            UNION ALL SELECT 9
+            UNION ALL SELECT 10
+            UNION ALL SELECT 11
+            UNION ALL SELECT 12
+        )
+        SELECT 
+            M.Mes,
+            DATENAME(MONTH, DATEFROMPARTS({filters.year}, M.Mes, 1)) AS NomeMes,
+            ISNULL(C.Total, 0) AS TotalImportacao
+        FROM Meses M
+        LEFT JOIN (
+            SELECT Mes, COUNT(*) AS Total
+            FROM Base
+            GROUP BY Mes
+        ) C ON M.Mes = C.Mes
+        ORDER BY M.Mes
+    """
+    return run_query(sql)
