@@ -4,6 +4,7 @@ from ....schemas.schemas import OriginDateFilter, YearFilter, YearRangeFilter
 from ....services.processes.service import (
     get_by_origin_registration_by_year_range,
     get_by_origin_registration_last_six_months,
+    get_by_origin_capture_last_six_months,
     get_by_origin_with_instance_date_filter,
     get_group_stats,
     get_matter_stats,
@@ -85,3 +86,14 @@ def processes_by_origin_registration_last_six_months(filters: YearFilter):
     para os últimos 6 meses do ano especificado (julho a dezembro).
     """
     return get_by_origin_registration_last_six_months(filters)
+
+@router.post(
+    "/by-origin-capture-last-six-months",
+    summary="Processos de captura dos últimos 6 meses do ano"
+)
+def processes_by_origin_capture_last_six_months(filters: YearFilter):
+    """
+    Retorna o total de processos de origem 'Captura' agrupados por mês,
+    para os últimos 6 meses do ano especificado (julho a dezembro).
+    """
+    return get_by_origin_capture_last_six_months(filters)
