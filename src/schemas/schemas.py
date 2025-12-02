@@ -8,3 +8,6 @@ class OriginDateFilter(BaseModel):
 class YearRangeFilter(BaseModel):
     start_year: int
     end_year: int
+
+class YearFilter(BaseModel):
+    year: int

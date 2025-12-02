@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 
-from ....schemas.schemas import OriginDateFilter, YearRangeFilter
+from ....schemas.schemas import OriginDateFilter, YearFilter, YearRangeFilter
 from ....services.processes.service import (
     get_by_origin_registration_by_year_range,
+    get_by_origin_registration_last_six_months,
     get_by_origin_with_instance_date_filter,
     get_group_stats,
     get_matter_stats,
@@ -73,3 +74,14 @@ def processes_by_origin_registration_year_range(filters: YearRangeFilter):
     dentro do intervalo especificado (start_year a end_year).
     """
     return get_by_origin_registration_by_year_range(filters)
+
+@router.post(
+    "/by-origin-registration-last-six-months",
+    summary="Processos de cadastro dos últimos 6 meses do ano"
+)
+def processes_by_origin_registration_last_six_months(filters: YearFilter):
+    """
+    Retorna o total de processos de origem 'Cadastro' agrupados por mês,
+    para os últimos 6 meses do ano especificado (julho a dezembro).
+    """
+    return get_by_origin_registration_last_six_months(filters)
