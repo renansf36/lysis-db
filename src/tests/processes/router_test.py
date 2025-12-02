@@ -141,3 +141,36 @@ def test_processes_by_origin_capture_last_six_months_custom_year():
   )
   
   assert response.status_code == 200
+
+def test_processes_by_origin_distribution_last_six_months():
+  """
+  Testa o endpoint POST /by-origin-distribution-last-six-months
+  para o ano de 2025, retornando os últimos 6 meses (julho a dezembro)
+  """
+  payload = {
+    "year": 2025
+  }
+  response = client.post(
+    "/api/v1/processes/by-origin-distribution-last-six-months",
+    json=payload
+  )
+  
+  assert response.status_code == 200
+  data = response.json()
+  
+  # Verifica se é uma lista
+  assert isinstance(data, list)
+  
+def test_processes_by_origin_distribution_last_six_months_custom_year():
+  """
+  Testa o endpoint com um ano diferente (2024)
+  """
+  payload = {
+    "year": 2024
+  }
+  response = client.post(
+    "/api/v1/processes/by-origin-distribution-last-six-months",
+    json=payload
+  )
+  
+  assert response.status_code == 200
