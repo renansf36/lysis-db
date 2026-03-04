@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -11,9 +13,12 @@ app = FastAPI(
   redoc_url="/redoc"
 )
 
-origins = [
-    "http://localhost:4546",
-]
+origins_env = os.getenv("CORS_ORIGINS")
+
+if origins_env:
+    origins = [origin.strip() for origin in origins_env.split(",")]
+else:
+    origins = ["http://localhost:4546"]
 
 app.add_middleware(
     CORSMiddleware,
