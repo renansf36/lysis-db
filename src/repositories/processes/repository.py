@@ -5,7 +5,6 @@ from src.infra.db import run_query
 from src.schemas.schemas import (
     DateRangeFilter,
     OriginDateFilter,
-    YearFilter,
 )
 
 
@@ -91,12 +90,16 @@ def _fetch_origin_last_six_months(
     return run_query(sql, (origin_name, start, end, start_month, end_month))
 
 
-def fetch_process_count():
-    sql = """
-        SELECT COUNT(*) AS total_processos
-        FROM PRO_PROCESSO_VALENCA
+def fetch_process_count(filters: DateRangeFilter):
+    instance_date = _instance_date_expr("T02")
+    sql = f"""
+        SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total_processos
+        FROM PRO_PROCESSO_VALENCA T01
+        LEFT JOIN INS_INSTANCIA_VALENCA T02
+            ON T01.ISN_PROCESSO = T02.ISN_PROCESSO
+        {_date_filter_clause(instance_date)}
     """
-    return run_query(sql)
+    return run_query(sql, _date_filter_params(filters))
 
 
 def fetch_by_origin(filters: DateRangeFilter):
@@ -301,11 +304,11 @@ def fetch_by_origin_distribution_last_six_months(filters: DateRangeFilter):
     )
 
 
-def fetch_by_origin_import_last_six_months(filters: YearFilter):
+def fetch_by_origin_import_last_six_months(filters: DateRangeFilter):
     return _fetch_origin_last_six_months(
         origin_name="Importação",
         total_alias="TotalImportacao",
-        year=filters.year,
+        filters=filters,
     )
 
 
@@ -363,7 +366,7 @@ def fetch_by_origin_with_date_range_detailed(filters: DateRangeFilter):
     return run_query(sql, params)
 
 
-def fetch_publication_by_matter_year(filters: YearFilter):
+def fetch_publication_by_matter_year(filters: DateRangeFilter):
     sql = """
         SELECT COUNT(*) AS total,
                COALESCE(TMAT.NOM_MATERIA, 'Não informado') AS subject
@@ -375,14 +378,19 @@ def fetch_publication_by_matter_year(filters: YearFilter):
         WHERE T01.TIP_ORIGEM = 3
           AND T01.DAT_EXCLUSAO IS NULL
           AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
-          AND YEAR(T01.DAT_INCLUSAO) = %s
+          AND TRY_CONVERT(date, T01.DAT_INCLUSAO) >= %s
+          AND TRY_CONVERT(date, T01.DAT_INCLUSAO) < DATEADD(day, 1, %s)
         GROUP BY COALESCE(TMAT.NOM_MATERIA, 'Não informado')
         ORDER BY subject
     """
-    return run_query(sql, (filters.year,))
+    params = (
+        _serialize_date(filters.start_date),
+        _serialize_date(filters.end_date),
+    )
+    return run_query(sql, params)
 
 
-def fetch_publication_by_matter_total():
+def fetch_publication_by_matter_total(filters: DateRangeFilter):
     sql = """
         SELECT COUNT(*) AS total,
                COALESCE(TMAT.NOM_MATERIA, 'Não informado') AS subject
@@ -394,46 +402,61 @@ def fetch_publication_by_matter_total():
         WHERE T01.TIP_ORIGEM = 3
           AND T01.DAT_EXCLUSAO IS NULL
           AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
+          AND TRY_CONVERT(date, T01.DAT_INCLUSAO) >= %s
+          AND TRY_CONVERT(date, T01.DAT_INCLUSAO) < DATEADD(day, 1, %s)
         GROUP BY COALESCE(TMAT.NOM_MATERIA, 'Não informado')
         ORDER BY subject
     """
-    return run_query(sql)
+    params = (
+        _serialize_date(filters.start_date),
+        _serialize_date(filters.end_date),
+    )
+    return run_query(sql, params)
 
 
-def fetch_publication_by_matter_last_six_months(filters: YearFilter):
+def fetch_publication_by_matter_last_six_months(filters: DateRangeFilter):
+    start = _serialize_date(filters.start_date)
+    end = _serialize_date(filters.end_date)
+    start_month = filters.start_date.replace(day=1).isoformat()
+    end_month = filters.end_date.replace(day=1).isoformat()
     sql = """
         WITH Base AS (
-            SELECT MONTH(TRY_CONVERT(date, T01.DAT_INCLUSAO)) AS Mes
+            SELECT DATEFROMPARTS(
+                       YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)),
+                       MONTH(TRY_CONVERT(date, T01.DAT_INCLUSAO)),
+                       1
+                   ) AS MesRef
             FROM ADA_ANDAMENTO_VALENCA T01
             WHERE T01.TIP_ORIGEM = 3
               AND T01.DAT_EXCLUSAO IS NULL
               AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
               AND TRY_CONVERT(date, T01.DAT_INCLUSAO) IS NOT NULL
-              AND YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)) = %s
+              AND TRY_CONVERT(date, T01.DAT_INCLUSAO) >= %s
+              AND TRY_CONVERT(date, T01.DAT_INCLUSAO) < DATEADD(day, 1, %s)
         ),
         Meses AS (
-            SELECT 7 AS Mes
-            UNION ALL SELECT 8
-            UNION ALL SELECT 9
-            UNION ALL SELECT 10
-            UNION ALL SELECT 11
-            UNION ALL SELECT 12
+            SELECT TRY_CONVERT(date, %s) AS MesRef
+            UNION ALL
+            SELECT DATEADD(month, 1, MesRef)
+            FROM Meses
+            WHERE DATEADD(month, 1, MesRef) <= TRY_CONVERT(date, %s)
         )
-        SELECT M.Mes,
-               DATENAME(MONTH, DATEFROMPARTS(%s, M.Mes, 1)) AS NomeMes,
+        SELECT MONTH(M.MesRef) AS Mes,
+               DATENAME(MONTH, M.MesRef) AS NomeMes,
                ISNULL(C.Total, 0) AS TotalPublicacoes
         FROM Meses M
         LEFT JOIN (
-            SELECT Mes, COUNT(*) AS Total
+            SELECT MesRef, COUNT(*) AS Total
             FROM Base
-            GROUP BY Mes
-        ) C ON M.Mes = C.Mes
-        ORDER BY M.Mes
+            GROUP BY MesRef
+        ) C ON M.MesRef = C.MesRef
+        ORDER BY M.MesRef
+        OPTION (MAXRECURSION 1000)
     """
-    return run_query(sql, (filters.year, filters.year))
+    return run_query(sql, (start, end, start_month, end_month))
 
 
-def fetch_publication_by_matter_last_month(filters: YearFilter):
+def fetch_publication_by_matter_last_month(filters: DateRangeFilter):
     sql = """
         WITH Base AS (
             SELECT TRY_CONVERT(date, T01.DAT_INCLUSAO) AS DataPublicacao,
@@ -445,19 +468,18 @@ def fetch_publication_by_matter_last_month(filters: YearFilter):
               AND T01.DAT_EXCLUSAO IS NULL
               AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
               AND TRY_CONVERT(date, T01.DAT_INCLUSAO) IS NOT NULL
-              AND YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)) = %s
+              AND TRY_CONVERT(date, T01.DAT_INCLUSAO) >= %s
+              AND TRY_CONVERT(date, T01.DAT_INCLUSAO) < DATEADD(day, 1, %s)
         ),
         UltimoMes AS (
-            SELECT MAX(Ano) AS Ano,
-                   MAX(Mes) AS Mes
+            SELECT MAX(DATEFROMPARTS(Ano, Mes, 1)) AS MesRef
             FROM Base
         )
         SELECT COUNT(*) AS total,
                COALESCE(TMAT.NOM_MATERIA, 'Não informado') AS subject
         FROM Base B
         INNER JOIN UltimoMes U
-            ON B.Ano = U.Ano
-           AND B.Mes = U.Mes
+            ON DATEFROMPARTS(B.Ano, B.Mes, 1) = U.MesRef
         INNER JOIN PRO_PROCESSO_VALENCA TPROC
             ON B.ISN_PROCESSO = TPROC.ISN_PROCESSO
         LEFT JOIN MAT_MATERIA_VALENCA TMAT
@@ -465,7 +487,11 @@ def fetch_publication_by_matter_last_month(filters: YearFilter):
         GROUP BY COALESCE(TMAT.NOM_MATERIA, 'Não informado')
         ORDER BY subject
     """
-    return run_query(sql, (filters.year,))
+    params = (
+        _serialize_date(filters.start_date),
+        _serialize_date(filters.end_date),
+    )
+    return run_query(sql, params)
 
 
 def fetch_process_inclusion_report(
