@@ -23,12 +23,11 @@ from ...repositories.processes.repository import (
 from ...schemas.schemas import (
     DateRangeFilter,
     OriginDateFilter,
-    YearFilter,
 )
 
 
-def get_process_count():
-    result = fetch_process_count()
+def get_process_count(filters: DateRangeFilter):
+    result = fetch_process_count(filters)
     total = result[0]["total_processos"] if result else 0
     return {"total": total}
 
@@ -77,7 +76,7 @@ def get_by_origin_distribution_last_six_months(filters: DateRangeFilter):
     return fetch_by_origin_distribution_last_six_months(filters)
 
 
-def get_by_origin_import_last_six_months(filters: YearFilter):
+def get_by_origin_import_last_six_months(filters: DateRangeFilter):
     return fetch_by_origin_import_last_six_months(filters)
 
 
@@ -103,17 +102,17 @@ def get_process_inclusion_report(
     }
 
 
-def get_publication_by_matter_year(filters: YearFilter):
+def get_publication_by_matter_year(filters: DateRangeFilter):
     return fetch_publication_by_matter_year(filters)
 
 
-def get_publication_by_matter_total():
-    return fetch_publication_by_matter_total()
+def get_publication_by_matter_total(filters: DateRangeFilter):
+    return fetch_publication_by_matter_total(filters)
 
 
-def get_publication_by_matter_last_six_months(filters: YearFilter):
+def get_publication_by_matter_last_six_months(filters: DateRangeFilter):
     return fetch_publication_by_matter_last_six_months(filters)
 
 
-def get_publication_by_matter_last_month(filters: YearFilter):
+def get_publication_by_matter_last_month(filters: DateRangeFilter):
     return fetch_publication_by_matter_last_month(filters)

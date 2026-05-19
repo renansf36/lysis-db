@@ -4,7 +4,6 @@ from ....schemas.schemas import (
     DateRangeFilter,
     OriginDateFilter,
     PaginatedProcessInclusionReport,
-    YearFilter,
 )
 from ....services.processes.service import (
     get_by_origin_capture_last_six_months,
@@ -32,9 +31,9 @@ from ....services.processes.service import (
 router = APIRouter(prefix="/api/v1/processes", tags=["Processes"])
 
 
-@router.get("/count", summary="Contagem total de processos")
-def process_count():
-    return get_process_count()
+@router.post("/count", summary="Contagem total de processos por periodo")
+def process_count(filters: DateRangeFilter):
+    return get_process_count(filters)
 
 
 @router.post("/by-origin", summary="Processos por origem")
@@ -112,9 +111,9 @@ def processes_by_origin_distribution_last_six_months(filters: DateRangeFilter):
 
 @router.post(
     "/by-origin-import-last-six-months",
-    summary="Processos de importacao dos ultimos 6 meses do ano",
+    summary="Processos de importacao por mes no intervalo informado",
 )
-def processes_by_origin_import_last_six_months(filters: YearFilter):
+def processes_by_origin_import_last_six_months(filters: DateRangeFilter):
     return get_by_origin_import_last_six_months(filters)
 
 
@@ -158,31 +157,31 @@ def process_inclusion_period_report(
 
 @router.post(
     "/publications/by-matter-year",
-    summary="Publicacoes por materia em um ano especifico",
+    summary="Publicacoes por materia em um periodo",
 )
-def publications_by_matter_year(filters: YearFilter):
+def publications_by_matter_year(filters: DateRangeFilter):
     return get_publication_by_matter_year(filters)
 
 
-@router.get(
+@router.post(
     "/publications/by-matter-total",
-    summary="Total geral de publicacoes por materia",
+    summary="Total de publicacoes por materia em um periodo",
 )
-def publications_by_matter_total():
-    return get_publication_by_matter_total()
+def publications_by_matter_total(filters: DateRangeFilter):
+    return get_publication_by_matter_total(filters)
 
 
 @router.post(
     "/publications/by-matter-last-six-months",
-    summary="Publicacoes por mes nos ultimos 6 meses do ano",
+    summary="Publicacoes por mes no intervalo informado",
 )
-def publications_by_matter_last_six_months(filters: YearFilter):
+def publications_by_matter_last_six_months(filters: DateRangeFilter):
     return get_publication_by_matter_last_six_months(filters)
 
 
 @router.post(
     "/publications/by-matter-last-month",
-    summary="Publicacoes por materia no ultimo mes com dados",
+    summary="Publicacoes por materia no ultimo mes com dados do periodo",
 )
-def publications_by_matter_last_month(filters: YearFilter):
+def publications_by_matter_last_month(filters: DateRangeFilter):
     return get_publication_by_matter_last_month(filters)

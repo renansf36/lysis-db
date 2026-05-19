@@ -13,28 +13,14 @@ client = TestClient(app)
 
 
 @pytest.mark.parametrize(
-    ("path", "target", "payload"),
-    [
-        ("/api/v1/processes/count", "get_process_count", {"total": 10}),
-        (
-            "/api/v1/processes/publications/by-matter-total",
-            "get_publication_by_matter_total",
-            [{"subject": "Fiscal", "total": 6}],
-        ),
-    ],
-)
-def test_get_endpoints(monkeypatch, path, target, payload):
-    monkeypatch.setattr(processes_router_module, target, lambda *args: payload)
-
-    response = client.get(path)
-
-    assert response.status_code == 200
-    assert response.json() == payload
-
-
-@pytest.mark.parametrize(
     ("path", "target", "body", "payload"),
     [
+        (
+            "/api/v1/processes/count",
+            "get_process_count",
+            {"start_date": "2025-01-10", "end_date": "2025-01-31"},
+            {"total": 10},
+        ),
         (
             "/api/v1/processes/by-origin",
             "get_origin_stats",
@@ -104,7 +90,7 @@ def test_get_endpoints(monkeypatch, path, target, payload):
         (
             "/api/v1/processes/by-origin-import-last-six-months",
             "get_by_origin_import_last_six_months",
-            {"year": 2025},
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
             [{"Mes": 7, "NomeMes": "July", "TotalImportacao": 1}],
         ),
         (
@@ -133,19 +119,25 @@ def test_get_endpoints(monkeypatch, path, target, payload):
         (
             "/api/v1/processes/publications/by-matter-year",
             "get_publication_by_matter_year",
-            {"year": 2025},
+            {"start_date": "2025-01-01", "end_date": "2025-12-31"},
             [{"subject": "Fiscal", "total": 9}],
+        ),
+        (
+            "/api/v1/processes/publications/by-matter-total",
+            "get_publication_by_matter_total",
+            {"start_date": "2025-01-01", "end_date": "2025-12-31"},
+            [{"subject": "Fiscal", "total": 6}],
         ),
         (
             "/api/v1/processes/publications/by-matter-last-six-months",
             "get_publication_by_matter_last_six_months",
-            {"year": 2025},
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
             [{"Mes": 7, "NomeMes": "July", "TotalPublicacoes": 9}],
         ),
         (
             "/api/v1/processes/publications/by-matter-last-month",
             "get_publication_by_matter_last_month",
-            {"year": 2025},
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
             [{"subject": "Fiscal", "total": 4}],
         ),
     ],
@@ -178,6 +170,30 @@ def test_processes_by_origin_parses_date_range_payload(monkeypatch):
     )
 
     assert response.status_code == 200
+    assert captured["filters"].start_date == date(2025, 1, 10)
+    assert captured["filters"].end_date == date(2025, 1, 31)
+
+
+def test_process_count_parses_date_range_payload(monkeypatch):
+    captured = {}
+
+    def fake_handler(filters):
+        captured["filters"] = filters
+        return {"total": 10}
+
+    monkeypatch.setattr(
+        processes_router_module,
+        "get_process_count",
+        fake_handler,
+    )
+
+    response = client.post(
+        "/api/v1/processes/count",
+        json={"start_date": "2025-01-10", "end_date": "2025-01-31"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"total": 10}
     assert captured["filters"].start_date == date(2025, 1, 10)
     assert captured["filters"].end_date == date(2025, 1, 31)
 
