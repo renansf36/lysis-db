@@ -1,273 +1,243 @@
+from datetime import date
+
+import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from src.api.v1.processes.router import router
+from src.api.v1.processes import router as processes_router_module
 
 app = FastAPI()
-app.include_router(router)
+app.include_router(processes_router_module.router)
 
 client = TestClient(app)
 
-def test_process_count():
-  response = client.get("/api/v1/processes/count")
-  assert response.status_code == 200
 
-def test_processes_by_origin():
-  response = client.get("/api/v1/processes/by-origin")
-  assert response.status_code == 200
+@pytest.mark.parametrize(
+    ("path", "target", "payload"),
+    [
+        ("/api/v1/processes/count", "get_process_count", {"total": 10}),
+        (
+            "/api/v1/processes/publications/by-matter-total",
+            "get_publication_by_matter_total",
+            [{"subject": "Fiscal", "total": 6}],
+        ),
+    ],
+)
+def test_get_endpoints(monkeypatch, path, target, payload):
+    monkeypatch.setattr(processes_router_module, target, lambda *args: payload)
 
-def test_processes_by_status():
-  response = client.get("/api/v1/processes/by-status")
-  assert response.status_code == 200
+    response = client.get(path)
 
-def test_processes_by_matter():
-  response = client.get("/api/v1/processes/by-matter")
-  assert response.status_code == 200
+    assert response.status_code == 200
+    assert response.json() == payload
 
-def test_processes_by_group():
-  response = client.get("/api/v1/processes/by-group")
-  assert response.status_code == 200
 
-def test_processes_by_organization():
-  response = client.get("/api/v1/processes/by-organization")
-  assert response.status_code == 200
+@pytest.mark.parametrize(
+    ("path", "target", "body", "payload"),
+    [
+        (
+            "/api/v1/processes/by-origin",
+            "get_origin_stats",
+            {"start_date": "2025-01-10", "end_date": "2025-01-31"},
+            [{"origin": "Cadastro", "total": 5}],
+        ),
+        (
+            "/api/v1/processes/by-status",
+            "get_status_stats",
+            {"start_date": "2025-01-10", "end_date": "2025-01-31"},
+            [{"status": "Ativo", "total": 3}],
+        ),
+        (
+            "/api/v1/processes/by-matter",
+            "get_matter_stats",
+            {"start_date": "2025-01-10", "end_date": "2025-01-31"},
+            [{"subject": "Civel", "total": 2}],
+        ),
+        (
+            "/api/v1/processes/by-group",
+            "get_group_stats",
+            {"start_date": "2025-01-10", "end_date": "2025-01-31"},
+            [{"process_group": "Equipe A", "total": 4}],
+        ),
+        (
+            "/api/v1/processes/by-organization",
+            "get_organization_stats",
+            {"start_date": "2025-01-10", "end_date": "2025-01-31"},
+            [{"agency": "Orgao X", "total": 1}],
+        ),
+        (
+            "/api/v1/processes/by-origin-with-instance-date-filter",
+            "get_by_origin_with_instance_date_filter",
+            {"start_date": "2025-01-01", "end_date": "2025-01-31"},
+            [{"Origem": "Cadastro", "Quantidade": 8}],
+        ),
+        (
+            "/api/v1/processes/by-origin-registration-year-range",
+            "get_by_origin_registration_by_year_range",
+            {"start_date": "2020-01-01", "end_date": "2024-12-31"},
+            [{"Ano": 2024, "TotalCadastro": 12}],
+        ),
+        (
+            "/api/v1/processes/by-origin-registration-year-range-detailed",
+            "get_process_registration_details_by_year_range",
+            {"start_date": "2020-01-01", "end_date": "2024-12-31"},
+            [{"Ano": 2024, "TotalCadastro": 12, "OrigemProcesso": "Cadastro"}],
+        ),
+        (
+            "/api/v1/processes/by-origin-registration-last-six-months",
+            "get_by_origin_registration_last_six_months",
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
+            [{"Mes": 7, "NomeMes": "July", "TotalCadastro": 1}],
+        ),
+        (
+            "/api/v1/processes/by-origin-capture-last-six-months",
+            "get_by_origin_capture_last_six_months",
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
+            [{"Mes": 7, "NomeMes": "July", "TotalCaptura": 1}],
+        ),
+        (
+            "/api/v1/processes/by-origin-distribution-last-six-months",
+            "get_by_origin_distribution_last_six_months",
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
+            [{"Mes": 7, "NomeMes": "July", "TotalDistribuicao": 1}],
+        ),
+        (
+            "/api/v1/processes/by-origin-import-last-six-months",
+            "get_by_origin_import_last_six_months",
+            {"year": 2025},
+            [{"Mes": 7, "NomeMes": "July", "TotalImportacao": 1}],
+        ),
+        (
+            "/api/v1/processes/by-origin-with-date-range",
+            "get_by_origin_with_date_range",
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
+            [{"Origem": "Cadastro", "Quantidade": 9}],
+        ),
+        (
+            "/api/v1/processes/by-origin-with-date-range-detailed",
+            "get_by_origin_with_date_range_detailed",
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
+            [{"Origem": "Cadastro", "Ano": 2025, "Mes": 7, "Quantidade": 9}],
+        ),
+        (
+            "/api/v1/processes/reports/process-inclusion-period",
+            "get_process_inclusion_report",
+            {"start_date": "2025-07-01", "end_date": "2025-12-31"},
+            {
+                "total": 1,
+                "limit": 100,
+                "offset": 0,
+                "items": [{"N Processo": "1234567-89.2025.8.00.0001"}],
+            },
+        ),
+        (
+            "/api/v1/processes/publications/by-matter-year",
+            "get_publication_by_matter_year",
+            {"year": 2025},
+            [{"subject": "Fiscal", "total": 9}],
+        ),
+        (
+            "/api/v1/processes/publications/by-matter-last-six-months",
+            "get_publication_by_matter_last_six_months",
+            {"year": 2025},
+            [{"Mes": 7, "NomeMes": "July", "TotalPublicacoes": 9}],
+        ),
+        (
+            "/api/v1/processes/publications/by-matter-last-month",
+            "get_publication_by_matter_last_month",
+            {"year": 2025},
+            [{"subject": "Fiscal", "total": 4}],
+        ),
+    ],
+)
+def test_post_endpoints(monkeypatch, path, target, body, payload):
+    monkeypatch.setattr(processes_router_module, target, lambda *args: payload)
 
-def test_processes_by_origin_with_instance_date_filter():
-  payload = {
-    "start_date": "1991-01-01",
-    "end_date": "2025-11-28"
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-with-instance-date-filter",
-    json=payload
-  )
-  
-  assert response.status_code == 200
+    response = client.post(path, json=body)
 
-def test_processes_by_origin_registration_year_range():
-  """
-  Testa o endpoint POST /by-origin-registration-year-range
-  com intervalo de anos 2000-2025
-  """
-  payload = {
-    "start_year": 2000,
-    "end_year": 2025
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-registration-year-range",
-    json=payload
-  )
-  
-  assert response.status_code == 200
-  data = response.json()
-  
-  assert isinstance(data, list)
+    assert response.status_code == 200
+    assert response.json() == payload
 
-  for record in data:
-    assert "Ano" in record
-    assert "TotalCadastro" in record
-    assert isinstance(record["Ano"], int)
-    assert isinstance(record["TotalCadastro"], int)
 
-def test_processes_by_origin_registration_last_six_months():
-  """
-  Testa o endpoint POST /by-origin-registration-last-six-months
-  para o ano de 2025, retornando os últimos 6 meses (julho a dezembro)
-  """
-  payload = {
-    "year": 2025
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-registration-last-six-months",
-    json=payload
-  )
-  
-  assert response.status_code == 200
-  data = response.json()
-  
-  # Verifica se é uma lista
-  assert isinstance(data, list)
-  
-def test_processes_by_origin_registration_last_six_months_custom_year():
-  """
-  Testa o endpoint com um ano diferente (2024)
-  """
-  payload = {
-    "year": 2024
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-registration-last-six-months",
-    json=payload
-  )
-  
-  assert response.status_code == 200
-  data = response.json()
-  
-  # Verifica estrutura básica
-  assert len(data) == 6
-  assert all("Mes" in record for record in data)
-  assert all("NomeMes" in record for record in data)
-  assert all("TotalCadastro" in record for record in data)
+def test_processes_by_origin_parses_date_range_payload(monkeypatch):
+    captured = {}
 
-def test_processes_by_origin_capture_last_six_months():
-  """
-  Testa o endpoint POST /by-origin-capture-last-six-months
-  para o ano de 2025, retornando os últimos 6 meses (julho a dezembro)
-  """
-  payload = {
-    "year": 2025
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-capture-last-six-months",
-    json=payload
-  )
-  
-  assert response.status_code == 200
-  data = response.json()
-  
-  # Verifica se é uma lista
-  assert isinstance(data, list)
-      
-def test_processes_by_origin_capture_last_six_months_custom_year():
-  """
-  Testa o endpoint com um ano diferente (2024)
-  """
-  payload = {
-    "year": 2024
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-capture-last-six-months",
-    json=payload
-  )
-  
-  assert response.status_code == 200
+    def fake_handler(filters):
+        captured["filters"] = filters
+        return [{"origin": "Cadastro", "total": 5}]
 
-def test_processes_by_origin_distribution_last_six_months():
-  """
-  Testa o endpoint POST /by-origin-distribution-last-six-months
-  para o ano de 2025, retornando os últimos 6 meses (julho a dezembro)
-  """
-  payload = {
-    "year": 2025
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-distribution-last-six-months",
-    json=payload
-  )
-  
-  assert response.status_code == 200
-  data = response.json()
-  
-  # Verifica se é uma lista
-  assert isinstance(data, list)
-  
-def test_processes_by_origin_distribution_last_six_months_custom_year():
-  """
-  Testa o endpoint com um ano diferente (2024)
-  """
-  payload = {
-    "year": 2024
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-distribution-last-six-months",
-    json=payload
-  )
-  
-  assert response.status_code == 200
+    monkeypatch.setattr(
+        processes_router_module,
+        "get_origin_stats",
+        fake_handler,
+    )
 
-def test_processes_by_origin_import_last_six_months():
-  """
-  Testa o endpoint POST /by-origin-import-last-six-months
-  para o ano de 2025, retornando os últimos 6 meses (julho a dezembro)
-  """
-  payload = {
-    "year": 2025
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-import-last-six-months",
-    json=payload
-  )
-  
-  assert response.status_code == 200
-  data = response.json()
-  
-  # Verifica se é uma lista
-  assert isinstance(data, list)
-  
-def test_processes_by_origin_import_last_six_months_custom_year():
-  """
-  Testa o endpoint com um ano diferente (2024)
-  """
-  payload = {
-    "year": 2024
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-import-last-six-months",
-    json=payload
-  )
-  
-  assert response.status_code == 200
+    response = client.post(
+        "/api/v1/processes/by-origin",
+        json={"start_date": "2025-01-10", "end_date": "2025-01-31"},
+    )
 
-def test_processes_by_origin_with_date_range():
-  """
-  Testa o endpoint POST /by-origin-with-date-range
-  com intervalo de datas específico
-  """
-  payload = {
-    "start_date": "2025-07-01",
-    "end_date": "2025-12-31"
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-with-date-range",
-    json=payload
-  )
-  
-  assert response.status_code == 200
-  
-def test_processes_by_origin_with_date_range_custom():
-  """
-  Testa com intervalo diferente
-  """
-  payload = {
-    "start_date": "2024-01-01",
-    "end_date": "2024-12-31"
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-with-date-range",
-    json=payload
-  )
-  
-  assert response.status_code == 200
+    assert response.status_code == 200
+    assert captured["filters"].start_date == date(2025, 1, 10)
+    assert captured["filters"].end_date == date(2025, 1, 31)
 
-def test_processes_by_origin_with_date_range_detailed():
-  """
-  Test endpoint that returns detailed monthly breakdown of processes by origin for 2025.
-  """
-  payload = {
-    "start_date": "2025-01-01",
-    "end_date": "2025-12-31"
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-with-date-range-detailed",
-    json=payload
-  )
-  
-  assert response.status_code == 200
 
-def test_processes_by_origin_with_date_range_detailed_custom():
-  """
-  Test endpoint with custom date range and verify month-by-month breakdown.
-  """
-  payload = {
-    "start_date": "2024-06-01",
-    "end_date": "2024-08-31"
-  }
-  response = client.post(
-    "/api/v1/processes/by-origin-with-date-range-detailed",
-    json=payload
-  )
-  
-  assert response.status_code == 200
-  data = response.json()
-  assert isinstance(data, list)
-  
+def test_process_inclusion_report_parses_pagination_query_params(monkeypatch):
+    captured = {}
+
+    def fake_handler(filters, limit, offset):
+        captured["filters"] = filters
+        captured["limit"] = limit
+        captured["offset"] = offset
+        return {
+            "total": 1,
+            "limit": limit,
+            "offset": offset,
+            "items": [{"N Processo": "123"}],
+        }
+
+    monkeypatch.setattr(
+        processes_router_module,
+        "get_process_inclusion_report",
+        fake_handler,
+    )
+
+    response = client.post(
+        "/api/v1/processes/reports/process-inclusion-period",
+        params={"limit": 50, "offset": 100},
+        json={"start_date": "2025-07-01", "end_date": "2025-12-31"},
+    )
+
+    assert response.status_code == 200
+    assert captured["filters"].start_date == date(2025, 7, 1)
+    assert captured["filters"].end_date == date(2025, 12, 31)
+    assert captured["limit"] == 50
+    assert captured["offset"] == 100
+
+
+def test_process_inclusion_report_rejects_invalid_pagination():
+    response = client.post(
+        "/api/v1/processes/reports/process-inclusion-period",
+        params={"limit": 0, "offset": -1},
+        json={"start_date": "2025-07-01", "end_date": "2025-12-31"},
+    )
+
+    assert response.status_code == 422
+
+
+def test_date_range_payload_is_validated():
+    response = client.post(
+        "/api/v1/processes/by-origin",
+        json={"start_date": "2025-12-31", "end_date": "2025-01-01"},
+    )
+
+    assert response.status_code == 422
+
+
+def test_registration_year_range_date_payload_is_validated():
+    response = client.post(
+        "/api/v1/processes/by-origin-registration-year-range",
+        json={"start_date": "2025-12-31", "end_date": "2025-01-01"},
+    )
+
+    assert response.status_code == 422

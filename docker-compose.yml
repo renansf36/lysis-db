@@ -9,9 +9,9 @@ services:
       - .env
     environment:
       PYTHONUNBUFFERED: "1"
-      DB_HOST: "${DB_SERVER}"
+      DB_SERVER: "${DB_SERVER}"
       DB_PORT: "${DB_PORT}"
-      DB_USER: "${DB_USERNAME}"
-      DB_PASS: "${DB_PASSWORD}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
       DB_NAME: "${DB_NAME}"
     command: python prod.py
