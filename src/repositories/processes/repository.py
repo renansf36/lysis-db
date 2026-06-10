@@ -105,7 +105,7 @@ def fetch_process_count(filters: DateRangeFilter):
 def fetch_by_origin(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
     sql = f"""
-        SELECT COUNT(*) AS total,
+        SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                T02.DES_ATRIBUTO AS origin
         FROM PRO_PROCESSO_VALENCA T01
         INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02
@@ -123,7 +123,7 @@ def fetch_by_origin(filters: DateRangeFilter):
 def fetch_by_status(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
     sql = f"""
-        SELECT COUNT(*) AS total,
+        SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                T02.DES_ATRIBUTO AS status
         FROM PRO_PROCESSO_VALENCA T01
         INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02
@@ -141,7 +141,7 @@ def fetch_by_status(filters: DateRangeFilter):
 def fetch_by_matter(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
     sql = f"""
-        SELECT COUNT(*) AS total,
+        SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                COALESCE(T02.NOM_MATERIA, 'Não informado') AS subject
         FROM PRO_PROCESSO_VALENCA T01
         LEFT JOIN MAT_MATERIA_VALENCA T02
@@ -158,7 +158,7 @@ def fetch_by_matter(filters: DateRangeFilter):
 def fetch_by_group(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
     sql = f"""
-        SELECT COUNT(*) AS total,
+        SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                COALESCE(T02.DSC_GRUPO_PROCESSO, 'Não informado') AS process_group
         FROM PRO_PROCESSO_VALENCA T01
         LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T02
@@ -175,7 +175,7 @@ def fetch_by_group(filters: DateRangeFilter):
 def fetch_by_organization(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T02")
     sql = f"""
-        SELECT COUNT(*) AS total,
+        SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                COALESCE(T03.DSC_ORGAO, 'Não informado') AS agency
         FROM PRO_PROCESSO_VALENCA T01
         LEFT JOIN INS_INSTANCIA_VALENCA T02
@@ -192,7 +192,7 @@ def fetch_by_organization(filters: DateRangeFilter):
 def fetch_by_origin_with_instance_date_filter(filters: OriginDateFilter):
     instance_date = _instance_date_expr("T03")
     sql = f"""
-        SELECT COUNT(1) AS Quantidade,
+        SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS Quantidade,
                T02.DES_ATRIBUTO AS Origem
         FROM PRO_PROCESSO_VALENCA T01
         INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02
@@ -216,7 +216,7 @@ def fetch_by_origin_with_instance_date_filter(filters: OriginDateFilter):
 def fetch_by_origin_registration_by_year_range(filters: DateRangeFilter):
     sql = """
         SELECT YEAR(p.DAT_CADASTRO) AS Ano,
-               COUNT(DISTINCT i.NUM_PROCESSO) AS TotalCadastro
+               COUNT(DISTINCT p.ISN_PROCESSO) AS TotalCadastro
         FROM PRO_PROCESSO_VALENCA p
         LEFT JOIN INS_INSTANCIA_VALENCA i
             ON i.ISN_PROCESSO = p.ISN_PROCESSO
@@ -240,7 +240,7 @@ def fetch_by_origin_registration_by_year_range(filters: DateRangeFilter):
 def fetch_process_registration_details_by_year_range(filters: DateRangeFilter):
     sql = """
         SELECT YEAR(p.DAT_CADASTRO) AS Ano,
-               COUNT(DISTINCT iiv.NUM_PROCESSO) AS TotalCadastro,
+               COUNT(DISTINCT p.ISN_PROCESSO) AS TotalCadastro,
                ddav.DES_ATRIBUTO AS OrigemProcesso,
                ddav02.DES_ATRIBUTO AS StatusProcesso,
                COALESCE(mmv.NOM_MATERIA, 'Não informado') AS materia,
@@ -315,7 +315,7 @@ def fetch_by_origin_import_last_six_months(filters: DateRangeFilter):
 def fetch_by_origin_with_date_range(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
     sql = f"""
-        SELECT COUNT(1) AS Quantidade,
+        SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS Quantidade,
                T02.DES_ATRIBUTO AS Origem
         FROM PRO_PROCESSO_VALENCA T01
         INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02
@@ -342,7 +342,7 @@ def fetch_by_origin_with_date_range_detailed(filters: DateRangeFilter):
         SELECT T02.DES_ATRIBUTO AS Origem,
                YEAR({instance_date}) AS Ano,
                MONTH({instance_date}) AS Mes,
-               COUNT(1) AS Quantidade
+               COUNT(DISTINCT T01.ISN_PROCESSO) AS Quantidade
         FROM PRO_PROCESSO_VALENCA T01
         INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02
             ON T01.TIP_ORIGEM_PROCESSO = T02.VAL_ATRIBUTO
@@ -503,19 +503,20 @@ def fetch_process_inclusion_report(
         WITH ProcessosBase AS (
             SELECT
                 p.ISN_PROCESSO,
-                i.NUM_PROCESSO,
                 MIN(a.DAT_INCLUSAO) AS DAT_INCLUSAO_PROCESSO
             FROM PRO_PROCESSO_VALENCA p
-            INNER JOIN INS_INSTANCIA_VALENCA i
-                ON i.ISN_PROCESSO = p.ISN_PROCESSO
             INNER JOIN ADA_ANDAMENTO_VALENCA a
                 ON a.ISN_PROCESSO = p.ISN_PROCESSO
             WHERE p.STA_PROCESSO = 0
               AND a.DAT_INCLUSAO >= %s
               AND a.DAT_INCLUSAO < DATEADD(day, 1, %s)
+              AND EXISTS (
+                  SELECT 1
+                  FROM INS_INSTANCIA_VALENCA i
+                  WHERE i.ISN_PROCESSO = p.ISN_PROCESSO
+              )
             GROUP BY
-                p.ISN_PROCESSO,
-                i.NUM_PROCESSO
+                p.ISN_PROCESSO
         ),
         InstanciaPrincipal AS (
             SELECT
@@ -585,7 +586,7 @@ def fetch_process_inclusion_report(
                     AS [Data da Contratacao],
                 CONVERT(date, p.DAT_DISTRIBUICAO)
                     AS [Data da Distribuicao],
-                pb.NUM_PROCESSO AS [N Processo],
+                ip.NUM_PROCESSO AS [N Processo],
                 p.NOM_PROCESSO AS [Titulo],
                 pp.TIPO_PARTE_PASSIVO + ': ' + pp.PARTE_POLO_PASSIVO
                     AS [Parte Cliente],
