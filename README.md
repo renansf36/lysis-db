@@ -9,6 +9,10 @@ Instale as dependências:
 pip install -r requirements.txt
 ```
 
+Crie um arquivo `.env` local a partir do `.env.example` e preencha as
+credenciais do banco. O `.env` e suas variantes locais não devem ser
+versionados.
+
 ## Execução (modo desenvolvimento)
 Use o task definido no `pyproject.toml`:
 
