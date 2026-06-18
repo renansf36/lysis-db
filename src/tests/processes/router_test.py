@@ -198,6 +198,34 @@ def test_process_count_parses_date_range_payload(monkeypatch):
     assert captured["filters"].end_date == date(2025, 1, 31)
 
 
+def test_process_count_parses_global_dimension_filters(monkeypatch):
+    captured = {}
+
+    def fake_handler(filters):
+        captured["filters"] = filters
+        return {"total": 10}
+
+    monkeypatch.setattr(
+        processes_router_module,
+        "get_process_count",
+        fake_handler,
+    )
+
+    response = client.post(
+        "/api/v1/processes/count",
+        json={
+            "start_date": "2025-01-10",
+            "end_date": "2025-01-31",
+            "process_group": "Equipe A",
+            "organization": "Orgao X",
+        },
+    )
+
+    assert response.status_code == 200
+    assert captured["filters"].process_group == "Equipe A"
+    assert captured["filters"].organization == "Orgao X"
+
+
 def test_process_inclusion_report_parses_pagination_query_params(monkeypatch):
     captured = {}
 

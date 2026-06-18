@@ -7,6 +7,8 @@ from pydantic import BaseModel, Field, model_validator
 class _DateRangeFilterBase(BaseModel):
     start_date: date
     end_date: date
+    process_group: str | None = None
+    organization: str | None = None
 
     @model_validator(mode="after")
     def validate_date_range(self):

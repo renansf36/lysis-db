@@ -100,3 +100,52 @@ def test_process_inclusion_report_has_one_base_row_per_process(monkeypatch):
     assert "GROUP BY\n                p.ISN_PROCESSO" in captured[0]
     assert "i.NUM_PROCESSO" not in captured[0]
     assert "EXISTS (" in captured[0]
+
+
+def test_process_aggregation_applies_global_dimension_filters(monkeypatch):
+    captured = {}
+
+    def fake_run_query(sql, params=None):
+        captured["sql"] = sql
+        captured["params"] = params
+        return []
+
+    monkeypatch.setattr(repository, "run_query", fake_run_query)
+    filters = DateRangeFilter(
+        start_date=date(2025, 1, 1),
+        end_date=date(2025, 1, 31),
+        process_group="Equipe A",
+        organization="Orgao X",
+    )
+
+    repository.fetch_by_origin(filters)
+
+    assert "COALESCE(T04.DSC_GRUPO_PROCESSO" in captured["sql"]
+    assert "COALESCE(T05.DSC_ORGAO" in captured["sql"]
+    assert captured["params"][-2:] == ("Equipe A", "Orgao X")
+
+
+def test_publication_aggregation_filters_organization_without_join_duplication(
+    monkeypatch,
+):
+    captured = {}
+
+    def fake_run_query(sql, params=None):
+        captured["sql"] = sql
+        captured["params"] = params
+        return []
+
+    monkeypatch.setattr(repository, "run_query", fake_run_query)
+    filters = DateRangeFilter(
+        start_date=date(2025, 1, 1),
+        end_date=date(2025, 1, 31),
+        process_group="Equipe A",
+        organization="Orgao X",
+    )
+
+    repository.fetch_publication_by_matter_total(filters)
+
+    assert "COALESCE(TGPP.DSC_GRUPO_PROCESSO" in captured["sql"]
+    assert "AND EXISTS (" in captured["sql"]
+    assert "i_dim.ISN_PROCESSO = TPROC.ISN_PROCESSO" in captured["sql"]
+    assert captured["params"][-2:] == ("Equipe A", "Orgao X")

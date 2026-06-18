@@ -7,9 +7,22 @@ from src.schemas.schemas import (
     OriginDateFilter,
 )
 
+UNINFORMED_SQL_LABEL = "NÃ£o informado"
+
 
 def _serialize_date(value: Optional[date]) -> Optional[str]:
     return value.isoformat() if value else None
+
+
+def _normalize_dimension(value: Optional[str]) -> Optional[str]:
+    if value is None:
+        return None
+
+    value = value.strip()
+    if not value or value == "all":
+        return None
+
+    return value
 
 
 def _date_filter_params(filters: DateRangeFilter) -> Tuple[
@@ -23,6 +36,72 @@ def _date_filter_params(filters: DateRangeFilter) -> Tuple[
     start = _serialize_date(filters.start_date)
     end = _serialize_date(filters.end_date)
     return (start, end, start, start, end, end)
+
+
+def _dimension_filter_clause(
+    filters: DateRangeFilter,
+    group_expr: Optional[str] = None,
+    organization_expr: Optional[str] = None,
+) -> Tuple[str, Tuple[Optional[str], ...]]:
+    clauses = []
+    params = []
+    process_group = _normalize_dimension(filters.process_group)
+    organization = _normalize_dimension(filters.organization)
+
+    if group_expr:
+        clauses.append(
+            f"AND COALESCE({group_expr}, '{UNINFORMED_SQL_LABEL}') = %s"
+        )
+        params.append(process_group)
+
+    if organization_expr:
+        clauses.append(
+            f"AND COALESCE({organization_expr}, '{UNINFORMED_SQL_LABEL}') = %s"
+        )
+        params.append(organization)
+
+    active_clauses = [
+        clause
+        for clause, value in zip(clauses, params)
+        if value is not None
+    ]
+    active_params = tuple(value for value in params if value is not None)
+
+    return "\n".join(active_clauses), active_params
+
+
+def _publication_dimension_filter_clause(
+    filters: DateRangeFilter,
+    process_alias: str,
+    group_expr: str,
+) -> Tuple[str, Tuple[Optional[str], ...]]:
+    clauses = []
+    params = []
+    process_group = _normalize_dimension(filters.process_group)
+    organization = _normalize_dimension(filters.organization)
+
+    if process_group is not None:
+        clauses.append(
+            f"AND COALESCE({group_expr}, '{UNINFORMED_SQL_LABEL}') = %s"
+        )
+        params.append(process_group)
+
+    if organization is not None:
+        clauses.append(
+            f"""
+          AND EXISTS (
+              SELECT 1
+              FROM INS_INSTANCIA_VALENCA i_dim
+              LEFT JOIN ORG_ORGAO_VALENCA org_dim
+                  ON i_dim.ISN_ORGAO = org_dim.ISN_ORGAO
+              WHERE i_dim.ISN_PROCESSO = {process_alias}.ISN_PROCESSO
+                AND COALESCE(org_dim.DSC_ORGAO, '{UNINFORMED_SQL_LABEL}') = %s
+          )
+            """.strip()
+        )
+        params.append(organization)
+
+    return "\n".join(clauses), tuple(params)
 
 
 def _instance_date_expr(table_alias: str) -> str:
@@ -51,9 +130,16 @@ def _fetch_origin_last_six_months(
     end = _serialize_date(filters.end_date)
     start_month = filters.start_date.replace(day=1).isoformat()
     end_month = filters.end_date.replace(day=1).isoformat()
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T03.DSC_GRUPO_PROCESSO",
+        organization_expr="T04.DSC_ORGAO",
+    )
     sql = f"""
         WITH Base AS (
-            SELECT DATEFROMPARTS(
+            SELECT DISTINCT
+                   T01.ISN_PROCESSO,
+                   DATEFROMPARTS(
                        YEAR(TRY_CONVERT(date, T01.DAT_STATUS)),
                        MONTH(TRY_CONVERT(date, T01.DAT_STATUS)),
                        1
@@ -62,10 +148,17 @@ def _fetch_origin_last_six_months(
             INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02
                 ON T01.TIP_ORIGEM_PROCESSO = T02.VAL_ATRIBUTO
                AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
+            LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T03
+                ON T01.ISN_GRUPO_PROCESSO = T03.ISN_GRUPO_PROCESSO
+            LEFT JOIN INS_INSTANCIA_VALENCA T05
+                ON T01.ISN_PROCESSO = T05.ISN_PROCESSO
+            LEFT JOIN ORG_ORGAO_VALENCA T04
+                ON T05.ISN_ORGAO = T04.ISN_ORGAO
             WHERE TRY_CONVERT(date, T01.DAT_STATUS) IS NOT NULL
               AND T02.DES_ATRIBUTO = %s
               AND TRY_CONVERT(date, T01.DAT_STATUS) >= %s
               AND TRY_CONVERT(date, T01.DAT_STATUS) < DATEADD(day, 1, %s)
+              {dimension_clause}
         ),
         Meses AS (
             SELECT TRY_CONVERT(date, %s) AS MesRef
@@ -87,23 +180,48 @@ def _fetch_origin_last_six_months(
         ORDER BY M.MesRef
         OPTION (MAXRECURSION 1000)
     """
-    return run_query(sql, (origin_name, start, end, start_month, end_month))
+    return run_query(
+        sql,
+        (
+            origin_name,
+            start,
+            end,
+            *dimension_params,
+            start_month,
+            end_month,
+        ),
+    )
 
 
 def fetch_process_count(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T02")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T03.DSC_GRUPO_PROCESSO",
+        organization_expr="T04.DSC_ORGAO",
+    )
     sql = f"""
         SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total_processos
         FROM PRO_PROCESSO_VALENCA T01
         LEFT JOIN INS_INSTANCIA_VALENCA T02
             ON T01.ISN_PROCESSO = T02.ISN_PROCESSO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T03
+            ON T01.ISN_GRUPO_PROCESSO = T03.ISN_GRUPO_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA T04
+            ON T02.ISN_ORGAO = T04.ISN_ORGAO
         {_date_filter_clause(instance_date)}
+        {dimension_clause}
     """
-    return run_query(sql, _date_filter_params(filters))
+    return run_query(sql, (*_date_filter_params(filters), *dimension_params))
 
 
 def fetch_by_origin(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T04.DSC_GRUPO_PROCESSO",
+        organization_expr="T05.DSC_ORGAO",
+    )
     sql = f"""
         SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                T02.DES_ATRIBUTO AS origin
@@ -113,15 +231,25 @@ def fetch_by_origin(filters: DateRangeFilter):
            AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
         LEFT JOIN INS_INSTANCIA_VALENCA T03
             ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T04
+            ON T01.ISN_GRUPO_PROCESSO = T04.ISN_GRUPO_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA T05
+            ON T03.ISN_ORGAO = T05.ISN_ORGAO
         {_date_filter_clause(instance_date)}
+        {dimension_clause}
         GROUP BY T02.DES_ATRIBUTO
         ORDER BY total DESC
     """
-    return run_query(sql, _date_filter_params(filters))
+    return run_query(sql, (*_date_filter_params(filters), *dimension_params))
 
 
 def fetch_by_status(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T04.DSC_GRUPO_PROCESSO",
+        organization_expr="T05.DSC_ORGAO",
+    )
     sql = f"""
         SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                T02.DES_ATRIBUTO AS status
@@ -131,15 +259,25 @@ def fetch_by_status(filters: DateRangeFilter):
            AND T02.NOM_ATRIBUTO = 'STA_PROCESSO'
         LEFT JOIN INS_INSTANCIA_VALENCA T03
             ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T04
+            ON T01.ISN_GRUPO_PROCESSO = T04.ISN_GRUPO_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA T05
+            ON T03.ISN_ORGAO = T05.ISN_ORGAO
         {_date_filter_clause(instance_date)}
+        {dimension_clause}
         GROUP BY T02.DES_ATRIBUTO
         ORDER BY T02.DES_ATRIBUTO
     """
-    return run_query(sql, _date_filter_params(filters))
+    return run_query(sql, (*_date_filter_params(filters), *dimension_params))
 
 
 def fetch_by_matter(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T04.DSC_GRUPO_PROCESSO",
+        organization_expr="T05.DSC_ORGAO",
+    )
     sql = f"""
         SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                COALESCE(T02.NOM_MATERIA, 'Não informado') AS subject
@@ -148,15 +286,25 @@ def fetch_by_matter(filters: DateRangeFilter):
             ON T01.ISN_MATERIA = T02.ISN_MATERIA
         LEFT JOIN INS_INSTANCIA_VALENCA T03
             ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T04
+            ON T01.ISN_GRUPO_PROCESSO = T04.ISN_GRUPO_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA T05
+            ON T03.ISN_ORGAO = T05.ISN_ORGAO
         {_date_filter_clause(instance_date)}
+        {dimension_clause}
         GROUP BY COALESCE(T02.NOM_MATERIA, 'Não informado')
         ORDER BY subject
     """
-    return run_query(sql, _date_filter_params(filters))
+    return run_query(sql, (*_date_filter_params(filters), *dimension_params))
 
 
 def fetch_by_group(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T02.DSC_GRUPO_PROCESSO",
+        organization_expr="T04.DSC_ORGAO",
+    )
     sql = f"""
         SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                COALESCE(T02.DSC_GRUPO_PROCESSO, 'Não informado') AS process_group
@@ -165,15 +313,23 @@ def fetch_by_group(filters: DateRangeFilter):
             ON T01.ISN_GRUPO_PROCESSO = T02.ISN_GRUPO_PROCESSO
         LEFT JOIN INS_INSTANCIA_VALENCA T03
             ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA T04
+            ON T03.ISN_ORGAO = T04.ISN_ORGAO
         {_date_filter_clause(instance_date)}
+        {dimension_clause}
         GROUP BY COALESCE(T02.DSC_GRUPO_PROCESSO, 'Não informado')
         ORDER BY process_group
     """
-    return run_query(sql, _date_filter_params(filters))
+    return run_query(sql, (*_date_filter_params(filters), *dimension_params))
 
 
 def fetch_by_organization(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T02")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T04.DSC_GRUPO_PROCESSO",
+        organization_expr="T03.DSC_ORGAO",
+    )
     sql = f"""
         SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS total,
                COALESCE(T03.DSC_ORGAO, 'Não informado') AS agency
@@ -182,15 +338,23 @@ def fetch_by_organization(filters: DateRangeFilter):
             ON T01.ISN_PROCESSO = T02.ISN_PROCESSO
         LEFT JOIN ORG_ORGAO_VALENCA T03
             ON T02.ISN_ORGAO = T03.ISN_ORGAO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T04
+            ON T01.ISN_GRUPO_PROCESSO = T04.ISN_GRUPO_PROCESSO
         {_date_filter_clause(instance_date)}
+        {dimension_clause}
         GROUP BY COALESCE(T03.DSC_ORGAO, 'Não informado')
         ORDER BY agency
     """
-    return run_query(sql, _date_filter_params(filters))
+    return run_query(sql, (*_date_filter_params(filters), *dimension_params))
 
 
 def fetch_by_origin_with_instance_date_filter(filters: OriginDateFilter):
     instance_date = _instance_date_expr("T03")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T04.DSC_GRUPO_PROCESSO",
+        organization_expr="T05.DSC_ORGAO",
+    )
     sql = f"""
         SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS Quantidade,
                T02.DES_ATRIBUTO AS Origem
@@ -200,9 +364,14 @@ def fetch_by_origin_with_instance_date_filter(filters: OriginDateFilter):
            AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
         LEFT JOIN INS_INSTANCIA_VALENCA T03
             ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T04
+            ON T01.ISN_GRUPO_PROCESSO = T04.ISN_GRUPO_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA T05
+            ON T03.ISN_ORGAO = T05.ISN_ORGAO
         WHERE {instance_date} IS NOT NULL
           AND {instance_date} >= %s
           AND {instance_date} <= %s
+          {dimension_clause}
         GROUP BY T02.DES_ATRIBUTO
         ORDER BY T02.DES_ATRIBUTO
     """
@@ -210,16 +379,25 @@ def fetch_by_origin_with_instance_date_filter(filters: OriginDateFilter):
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
     )
-    return run_query(sql, params)
+    return run_query(sql, (*params, *dimension_params))
 
 
 def fetch_by_origin_registration_by_year_range(filters: DateRangeFilter):
-    sql = """
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="g.DSC_GRUPO_PROCESSO",
+        organization_expr="org.DSC_ORGAO",
+    )
+    sql = f"""
         SELECT YEAR(p.DAT_CADASTRO) AS Ano,
                COUNT(DISTINCT p.ISN_PROCESSO) AS TotalCadastro
         FROM PRO_PROCESSO_VALENCA p
         LEFT JOIN INS_INSTANCIA_VALENCA i
             ON i.ISN_PROCESSO = p.ISN_PROCESSO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA g
+            ON p.ISN_GRUPO_PROCESSO = g.ISN_GRUPO_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA org
+            ON i.ISN_ORGAO = org.ISN_ORGAO
         INNER JOIN DAR_DOMINIO_ATRIBUTO_VALENCA T02
            ON p.TIP_ORIGEM_PROCESSO = T02.VAL_ATRIBUTO
            AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
@@ -227,18 +405,25 @@ def fetch_by_origin_registration_by_year_range(filters: DateRangeFilter):
           AND p.DAT_CADASTRO < DATEADD(day, 1, %s)
           AND i.NUM_PROCESSO IS NOT NULL
           AND T02.DES_ATRIBUTO = 'Cadastro'
+          {dimension_clause}
         GROUP BY YEAR(p.DAT_CADASTRO)
         ORDER BY Ano
     """
     params = (
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
+        *dimension_params,
     )
     return run_query(sql, params)
 
 
 def fetch_process_registration_details_by_year_range(filters: DateRangeFilter):
-    sql = """
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="ggpv.DSC_GRUPO_PROCESSO",
+        organization_expr="oov.DSC_ORGAO",
+    )
+    sql = f"""
         SELECT YEAR(p.DAT_CADASTRO) AS Ano,
                COUNT(DISTINCT p.ISN_PROCESSO) AS TotalCadastro,
                ddav.DES_ATRIBUTO AS OrigemProcesso,
@@ -265,6 +450,7 @@ def fetch_process_registration_details_by_year_range(filters: DateRangeFilter):
           AND p.DAT_CADASTRO < DATEADD(day, 1, %s)
           AND iiv.NUM_PROCESSO IS NOT NULL
           AND ddav.DES_ATRIBUTO = 'Cadastro'
+          {dimension_clause}
         GROUP BY YEAR(p.DAT_CADASTRO),
                  ddav.DES_ATRIBUTO,
                  ddav02.DES_ATRIBUTO,
@@ -276,6 +462,7 @@ def fetch_process_registration_details_by_year_range(filters: DateRangeFilter):
     params = (
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
+        *dimension_params,
     )
     return run_query(sql, params)
 
@@ -314,6 +501,11 @@ def fetch_by_origin_import_last_six_months(filters: DateRangeFilter):
 
 def fetch_by_origin_with_date_range(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T04.DSC_GRUPO_PROCESSO",
+        organization_expr="T05.DSC_ORGAO",
+    )
     sql = f"""
         SELECT COUNT(DISTINCT T01.ISN_PROCESSO) AS Quantidade,
                T02.DES_ATRIBUTO AS Origem
@@ -323,9 +515,14 @@ def fetch_by_origin_with_date_range(filters: DateRangeFilter):
            AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
         LEFT JOIN INS_INSTANCIA_VALENCA T03
             ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T04
+            ON T01.ISN_GRUPO_PROCESSO = T04.ISN_GRUPO_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA T05
+            ON T03.ISN_ORGAO = T05.ISN_ORGAO
         WHERE {instance_date} IS NOT NULL
           AND {instance_date} >= %s
           AND {instance_date} <= %s
+          {dimension_clause}
         GROUP BY T02.DES_ATRIBUTO
         ORDER BY T02.DES_ATRIBUTO
     """
@@ -333,11 +530,16 @@ def fetch_by_origin_with_date_range(filters: DateRangeFilter):
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
     )
-    return run_query(sql, params)
+    return run_query(sql, (*params, *dimension_params))
 
 
 def fetch_by_origin_with_date_range_detailed(filters: DateRangeFilter):
     instance_date = _instance_date_expr("T03")
+    dimension_clause, dimension_params = _dimension_filter_clause(
+        filters,
+        group_expr="T04.DSC_GRUPO_PROCESSO",
+        organization_expr="T05.DSC_ORGAO",
+    )
     sql = f"""
         SELECT T02.DES_ATRIBUTO AS Origem,
                YEAR({instance_date}) AS Ano,
@@ -349,9 +551,14 @@ def fetch_by_origin_with_date_range_detailed(filters: DateRangeFilter):
            AND T02.NOM_ATRIBUTO = 'TIP_ORIGEM_PROCESSO'
         LEFT JOIN INS_INSTANCIA_VALENCA T03
             ON T01.ISN_PROCESSO = T03.ISN_PROCESSO
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA T04
+            ON T01.ISN_GRUPO_PROCESSO = T04.ISN_GRUPO_PROCESSO
+        LEFT JOIN ORG_ORGAO_VALENCA T05
+            ON T03.ISN_ORGAO = T05.ISN_ORGAO
         WHERE {instance_date} IS NOT NULL
           AND {instance_date} >= %s
           AND {instance_date} <= %s
+          {dimension_clause}
         GROUP BY T02.DES_ATRIBUTO,
                  YEAR({instance_date}),
                  MONTH({instance_date})
@@ -363,11 +570,16 @@ def fetch_by_origin_with_date_range_detailed(filters: DateRangeFilter):
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
     )
-    return run_query(sql, params)
+    return run_query(sql, (*params, *dimension_params))
 
 
 def fetch_publication_by_matter_year(filters: DateRangeFilter):
-    sql = """
+    dimension_clause, dimension_params = _publication_dimension_filter_clause(
+        filters,
+        process_alias="TPROC",
+        group_expr="TGPP.DSC_GRUPO_PROCESSO",
+    )
+    sql = f"""
         SELECT COUNT(*) AS total,
                COALESCE(TMAT.NOM_MATERIA, 'Não informado') AS subject
         FROM ADA_ANDAMENTO_VALENCA T01
@@ -375,23 +587,32 @@ def fetch_publication_by_matter_year(filters: DateRangeFilter):
             ON T01.ISN_PROCESSO = TPROC.ISN_PROCESSO
         LEFT JOIN MAT_MATERIA_VALENCA TMAT
             ON TPROC.ISN_MATERIA = TMAT.ISN_MATERIA
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA TGPP
+            ON TPROC.ISN_GRUPO_PROCESSO = TGPP.ISN_GRUPO_PROCESSO
         WHERE T01.TIP_ORIGEM = 3
           AND T01.DAT_EXCLUSAO IS NULL
           AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
           AND TRY_CONVERT(date, T01.DAT_INCLUSAO) >= %s
           AND TRY_CONVERT(date, T01.DAT_INCLUSAO) < DATEADD(day, 1, %s)
+          {dimension_clause}
         GROUP BY COALESCE(TMAT.NOM_MATERIA, 'Não informado')
         ORDER BY subject
     """
     params = (
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
+        *dimension_params,
     )
     return run_query(sql, params)
 
 
 def fetch_publication_by_matter_total(filters: DateRangeFilter):
-    sql = """
+    dimension_clause, dimension_params = _publication_dimension_filter_clause(
+        filters,
+        process_alias="TPROC",
+        group_expr="TGPP.DSC_GRUPO_PROCESSO",
+    )
+    sql = f"""
         SELECT COUNT(*) AS total,
                COALESCE(TMAT.NOM_MATERIA, 'Não informado') AS subject
         FROM ADA_ANDAMENTO_VALENCA T01
@@ -399,17 +620,21 @@ def fetch_publication_by_matter_total(filters: DateRangeFilter):
             ON T01.ISN_PROCESSO = TPROC.ISN_PROCESSO
         LEFT JOIN MAT_MATERIA_VALENCA TMAT
             ON TPROC.ISN_MATERIA = TMAT.ISN_MATERIA
+        LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA TGPP
+            ON TPROC.ISN_GRUPO_PROCESSO = TGPP.ISN_GRUPO_PROCESSO
         WHERE T01.TIP_ORIGEM = 3
           AND T01.DAT_EXCLUSAO IS NULL
           AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
           AND TRY_CONVERT(date, T01.DAT_INCLUSAO) >= %s
           AND TRY_CONVERT(date, T01.DAT_INCLUSAO) < DATEADD(day, 1, %s)
+          {dimension_clause}
         GROUP BY COALESCE(TMAT.NOM_MATERIA, 'Não informado')
         ORDER BY subject
     """
     params = (
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
+        *dimension_params,
     )
     return run_query(sql, params)
 
@@ -419,7 +644,12 @@ def fetch_publication_by_matter_last_six_months(filters: DateRangeFilter):
     end = _serialize_date(filters.end_date)
     start_month = filters.start_date.replace(day=1).isoformat()
     end_month = filters.end_date.replace(day=1).isoformat()
-    sql = """
+    dimension_clause, dimension_params = _publication_dimension_filter_clause(
+        filters,
+        process_alias="TPROC",
+        group_expr="TGPP.DSC_GRUPO_PROCESSO",
+    )
+    sql = f"""
         WITH Base AS (
             SELECT DATEFROMPARTS(
                        YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)),
@@ -427,12 +657,17 @@ def fetch_publication_by_matter_last_six_months(filters: DateRangeFilter):
                        1
                    ) AS MesRef
             FROM ADA_ANDAMENTO_VALENCA T01
+            INNER JOIN PRO_PROCESSO_VALENCA TPROC
+                ON T01.ISN_PROCESSO = TPROC.ISN_PROCESSO
+            LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA TGPP
+                ON TPROC.ISN_GRUPO_PROCESSO = TGPP.ISN_GRUPO_PROCESSO
             WHERE T01.TIP_ORIGEM = 3
               AND T01.DAT_EXCLUSAO IS NULL
               AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
               AND TRY_CONVERT(date, T01.DAT_INCLUSAO) IS NOT NULL
               AND TRY_CONVERT(date, T01.DAT_INCLUSAO) >= %s
               AND TRY_CONVERT(date, T01.DAT_INCLUSAO) < DATEADD(day, 1, %s)
+              {dimension_clause}
         ),
         Meses AS (
             SELECT TRY_CONVERT(date, %s) AS MesRef
@@ -453,23 +688,42 @@ def fetch_publication_by_matter_last_six_months(filters: DateRangeFilter):
         ORDER BY M.MesRef
         OPTION (MAXRECURSION 1000)
     """
-    return run_query(sql, (start, end, start_month, end_month))
+    return run_query(
+        sql,
+        (
+            start,
+            end,
+            *dimension_params,
+            start_month,
+            end_month,
+        ),
+    )
 
 
 def fetch_publication_by_matter_last_month(filters: DateRangeFilter):
-    sql = """
+    dimension_clause, dimension_params = _publication_dimension_filter_clause(
+        filters,
+        process_alias="TPROC_BASE",
+        group_expr="TGPP_BASE.DSC_GRUPO_PROCESSO",
+    )
+    sql = f"""
         WITH Base AS (
             SELECT TRY_CONVERT(date, T01.DAT_INCLUSAO) AS DataPublicacao,
                    MONTH(TRY_CONVERT(date, T01.DAT_INCLUSAO)) AS Mes,
                    YEAR(TRY_CONVERT(date, T01.DAT_INCLUSAO)) AS Ano,
                    T01.ISN_PROCESSO
             FROM ADA_ANDAMENTO_VALENCA T01
+            INNER JOIN PRO_PROCESSO_VALENCA TPROC_BASE
+                ON T01.ISN_PROCESSO = TPROC_BASE.ISN_PROCESSO
+            LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA TGPP_BASE
+                ON TPROC_BASE.ISN_GRUPO_PROCESSO = TGPP_BASE.ISN_GRUPO_PROCESSO
             WHERE T01.TIP_ORIGEM = 3
               AND T01.DAT_EXCLUSAO IS NULL
               AND T01.DAT_EXCLUSAO_CADASTRO IS NULL
               AND TRY_CONVERT(date, T01.DAT_INCLUSAO) IS NOT NULL
               AND TRY_CONVERT(date, T01.DAT_INCLUSAO) >= %s
               AND TRY_CONVERT(date, T01.DAT_INCLUSAO) < DATEADD(day, 1, %s)
+              {dimension_clause}
         ),
         UltimoMes AS (
             SELECT MAX(DATEFROMPARTS(Ano, Mes, 1)) AS MesRef
@@ -490,6 +744,7 @@ def fetch_publication_by_matter_last_month(filters: DateRangeFilter):
     params = (
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
+        *dimension_params,
     )
     return run_query(sql, params)
 
@@ -499,7 +754,12 @@ def fetch_process_inclusion_report(
     limit: int,
     offset: int,
 ):
-    base_ctes = """
+    dimension_clause, dimension_params = _publication_dimension_filter_clause(
+        filters,
+        process_alias="p",
+        group_expr="g_base.DSC_GRUPO_PROCESSO",
+    )
+    base_ctes = f"""
         WITH ProcessosBase AS (
             SELECT
                 p.ISN_PROCESSO,
@@ -507,9 +767,12 @@ def fetch_process_inclusion_report(
             FROM PRO_PROCESSO_VALENCA p
             INNER JOIN ADA_ANDAMENTO_VALENCA a
                 ON a.ISN_PROCESSO = p.ISN_PROCESSO
+            LEFT JOIN GPP_GRUPO_PROCESSO_VALENCA g_base
+                ON p.ISN_GRUPO_PROCESSO = g_base.ISN_GRUPO_PROCESSO
             WHERE p.STA_PROCESSO = 0
               AND a.DAT_INCLUSAO >= %s
               AND a.DAT_INCLUSAO < DATEADD(day, 1, %s)
+              {dimension_clause}
               AND EXISTS (
                   SELECT 1
                   FROM INS_INSTANCIA_VALENCA i
@@ -719,6 +982,7 @@ def fetch_process_inclusion_report(
     base_params = (
         _serialize_date(filters.start_date),
         _serialize_date(filters.end_date),
+        *dimension_params,
     )
     total_rows = run_query(count_sql, base_params)
     total = total_rows[0]["total"] if total_rows else 0
