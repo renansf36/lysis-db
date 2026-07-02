@@ -1,0 +1,656 @@
+INFO:     127.0.0.1:56458 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56459 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64689 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52966 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61848 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58659 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63436 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51529 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65235 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56745 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57453 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65235 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56745 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57453 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50745 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65235 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57453 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56745 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50745 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65235 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57453 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56745 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50745 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57453 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56745 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50745 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57453 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50745 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57453 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56745 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50745 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57453 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52136 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50745 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56745 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65235 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51692 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54363 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64637 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54363 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65122 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64637 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54363 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65122 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54363 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64637 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54363 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64637 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54363 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64637 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64637 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54363 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63600 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59617 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64637 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56731 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65122 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54363 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/count HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/count HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52499 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62519 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60242 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51667 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51896 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55185 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/count HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/count HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/count HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/count HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-origin HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-status HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-group HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/by-matter HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51241 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57333 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55410 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56082 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59239 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "OPTIONS /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "OPTIONS /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "OPTIONS /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "OPTIONS /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "OPTIONS /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "OPTIONS /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "OPTIONS /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "OPTIONS /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "OPTIONS /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "OPTIONS /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60818 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49666 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59654 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56525 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58058 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65330 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64055 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64055 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64055 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61631 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64055 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61631 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61631 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61631 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/by-origin-with-date-range-detailed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61631 - "POST /api/v1/processes/by-origin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/by-status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/by-matter HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61631 - "POST /api/v1/processes/by-group HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59449 - "POST /api/v1/processes/by-organization HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50060 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52338 - "POST /api/v1/processes/publications/by-matter-total HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61631 - "POST /api/v1/processes/publications/by-matter-last-six-months HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64055 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59277 - "POST /api/v1/processes/publications/by-matter-last-month HTTP/1.1" 200 OK
