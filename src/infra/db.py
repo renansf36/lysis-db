@@ -39,8 +39,21 @@ def _get_database_settings() -> Tuple[str, int, str, str, str]:
     return server, port, database, username, password
 
 
+def _get_int_env(name: str, default: int) -> int:
+    raw_value = os.getenv(name)
+    if raw_value is None:
+        return default
+
+    try:
+        return int(raw_value)
+    except ValueError as exc:
+        raise RuntimeError(f"{name} must be a valid integer") from exc
+
+
 def get_connection():
     server, port, database, username, password = _get_database_settings()
+    login_timeout = _get_int_env("DB_LOGIN_TIMEOUT", 3)
+    query_timeout = _get_int_env("DB_QUERY_TIMEOUT", 20)
 
     try:
         return pymssql.connect(
@@ -49,11 +62,12 @@ def get_connection():
             user=username,
             password=password,
             database=database,
-            login_timeout=5,
-            timeout=30,
+            login_timeout=login_timeout,
+            timeout=query_timeout,
+            tds_version=os.getenv("DB_TDS_VERSION", "7.4"),
         )
     except Exception as exc:
-        raise RuntimeError("Error connecting to SQL Server") from exc
+        raise RuntimeError(f"Error connecting to SQL Server: {exc}") from exc
 
 
 def run_query(sql: str, params: Optional[tuple] = None):
